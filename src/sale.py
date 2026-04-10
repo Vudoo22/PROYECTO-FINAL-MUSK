@@ -1,6 +1,6 @@
 from datetime import datetime
 
-class Client:
+class Sale:
     def __init__(self, sale_id:int, client_id:int, product:str, category:str, amount:float, date:datetime):
         self.sale_id = sale_id
         self.client_id = client_id

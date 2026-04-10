@@ -1,1 +1,0 @@
-#Funciones puras (Filtros, mapas, transformaciones)

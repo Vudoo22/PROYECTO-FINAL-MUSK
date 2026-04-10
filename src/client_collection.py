@@ -1,6 +1,14 @@
 class ClientCollection:
-    def get_client_by_id(id):
-        pass
+    def __init__(self):
+        self.clients = []
+    
+    def add(self, client):
+        self.clients.append(client)
 
-    def clients_by_country(country):
+    def get_client_by_id(self, id):
+        for i in self.clients:
+            if i.client_id == id:
+                return i
+
+    def clients_by_country(self, country):
         pass
