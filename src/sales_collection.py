@@ -1,7 +1,7 @@
 import pandas as pd
 
 class SalesCollection:
-    def __init__(self):
+    def __init__(self, sales=None):
         if sales is not None:
             self.sales = sales 
         else:
