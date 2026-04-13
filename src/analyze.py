@@ -4,16 +4,17 @@ from client import Client
 from sale import Sale
 from client_collection import ClientCollection
 from sales_collection import SalesCollection
+from datetime import datetime
 
 #Lectura de datos
 with open('data/clients.json', 'r') as datos:
-    clients = json.load(datos)
+    c = json.load(datos)
 
 sales_df = pd.read_csv('data/sales.csv')
 
 #iteración de objetos en las clases collection
 client_collection = ClientCollection()
-for i in clients:
+for i in c:
     new_client = Client(i['client_id'], i['name'], i['country'], i['signup_date'])
     client_collection.add(new_client)
 
@@ -24,25 +25,111 @@ for i, row in sales_df.iterrows():
 
 #10 cálculos
 #1º
-num_client = 0
+total_clients = 0
 for i in client_collection.clients:
-    num_client += 1
-print(num_client)
+    total_clients += 1
 
 #2º
-num_sales = 0
+total_sales = 0
 for i in sales_collection.sales:
-    num_sales += 1
-print(num_sales)
+    total_sales += 1
 
 #3º
+total_spend = dict()
 for client in client_collection.clients:
-    print('client id: {}, amount: {}'.format(client.client_id, sales_collection.total_amount_by_client(client.client_id)))
+    total_spend[client.client_id] = sales_collection.total_amount_by_client(client.client_id)
 
 #4º
+sale_count = dict()
 for client in client_collection.clients:
-    print('client id: {}, total sales: {}'.format(client.client_id, sales_collection.sales_by_client(client.client_id)))
+    sale_count[client.client_id] = sales_collection.sales_by_client(client.client_id)
 
 #5º
+average_sale = dict()
 for client in client_collection.clients:
-    print('client id: {}, average sale: {}'.format(client.client_id, sales_collection.average_sale_by_client(client.client_id)))
+    average_sale[client.client_id] = sales_collection.average_sale_by_client(client.client_id)
+
+#6º
+#Conseguimo clientes por país
+ClientsByCountry = dict()
+for i in client_collection.clients:
+    if i.country not in ClientsByCountry:
+        ClientsByCountry[i.country] = client_collection.clients_by_country(i.country)
+
+topClientByCountry = dict()
+for country, clients_list in ClientsByCountry.items():
+    AmountByClient = dict()
+    for i in clients_list:
+        AmountByClient[i.client_id] = sales_collection.total_amount_by_client(i.client_id)      #Hacemos diccionario para cada país con id de cliente y total de gasto
+
+    topClientByCountry[country] = max(AmountByClient, key = AmountByClient.get)             #Con el diccionario previamente creado, comparamos sus valores y guardamos la llave del cliente con mayor gasto en un diccionario país: id
+
+#7º
+total_electronics = sales_collection.total_amount_by_category(sales_df, "Electronics")
+total_accessories = sales_collection.total_amount_by_category(sales_df, "Accessories")
+
+#8º
+sales_electronics = filter_sales_by_category(sales_collection.sales, "Electronics")
+sales_accessories = filter_sales_by_category(sales_collection.sales, "Accessories")
+
+top_client_electronics_id = top_client_by_category(sales_electronics)
+top_client_accessories_id = top_client_by_category(sales_accessories)
+
+top_client_electronics_name = client_collection.get_client_by_id(top_client_electronics_id).name
+top_client_accessories_name = client_collection.get_client_by_id(top_client_accessories_id).name
+
+#9º
+MINIMUM_AMOUNT = 500
+high_spenders = list()
+for client in client_collection.clients:
+    if sales_collection.total_amount_by_client(client.client_id) > MINIMUM_AMOUNT:
+        high_spenders.append(client.name)
+
+#10º
+sales_df["date"] = pd.to_datetime(sales_df["date"])
+total_revenue = sales_df.groupby(sales_df["date"].dt.to_period("M"))["amount"].sum()
+
+
+#Creación informe
+summary = {"total_clients": total_clients, "total_sales": total_sales, "total_revenue": "###"}
+
+clients = []
+for i in client_collection.clients:
+    clients.append(
+        {
+            "client_id": i.client_id,
+            "name": i.name,
+            "total_spend": total_spend[i.client_id],
+            "sale_count": sale_count[i.client_id],
+            "average_sale": average_sale[i.client_id]
+        }
+    )
+
+top_client_by_country = {
+    "Spain": topClientByCountry["Spain"],
+    "Germany": topClientByCountry["Germany"],
+    "France": topClientByCountry["France"]
+}
+
+sales_by_category = {
+    "Electronics": total_electronics,
+    "Accessories": total_accessories
+}
+
+high_spending_clients = high_spenders
+
+monthly_sales = str(total_revenue)
+
+report_data = {
+    "summary": summary,
+    "clients": clients,
+    "top_client_by_country": top_client_by_country,
+    "sales_by_category": sales_by_category,
+    "high_spending_clients": high_spending_clients,
+    "monthly_sales": monthly_sales
+}
+
+report_json = json.dumps(report_data, indent=4)
+
+with open("data/report.json", "w") as f:
+    f.write(report_json)

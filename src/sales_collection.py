@@ -1,3 +1,5 @@
+import pandas as pd
+
 class SalesCollection:
     def __init__(self):
         self.sales = []
@@ -19,8 +21,8 @@ class SalesCollection:
                 amount += sale.amount
         return amount
 
-    def total_amount_by_category(self, category):
-        pass
+    def total_amount_by_category(self, df, category):
+        return float(df.groupby("category")["amount"].sum().get(category, 0))
 
     def average_sale_by_client(self, client_id):
         averageSale = self.total_amount_by_client(client_id) / self.sales_by_client(client_id)

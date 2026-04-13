@@ -1,0 +1,44 @@
+{
+    "summary": {
+        "total_clients": 3,
+        "total_sales": 7,
+        "total_revenue": "###"
+    },
+    "clients": [
+        {
+            "client_id": 1,
+            "name": "Alice",
+            "total_spend": 1299.97,
+            "sale_count": 3,
+            "average_sale": 433.3233333333333
+        },
+        {
+            "client_id": 2,
+            "name": "Bob",
+            "total_spend": 1389.49,
+            "sale_count": 2,
+            "average_sale": 694.745
+        },
+        {
+            "client_id": 3,
+            "name": "Carol",
+            "total_spend": 349.98,
+            "sale_count": 2,
+            "average_sale": 174.99
+        }
+    ],
+    "top_client_by_country": {
+        "Spain": 1,
+        "Germany": 2,
+        "France": 3
+    },
+    "sales_by_category": {
+        "Electronics": 2699.4700000000003,
+        "Accessories": 339.97
+    },
+    "high_spending_clients": [
+        "Alice",
+        "Bob"
+    ],
+    "monthly_sales": "date\n2023-07    3039.44\nFreq: M, Name: amount, dtype: float64"
+}
