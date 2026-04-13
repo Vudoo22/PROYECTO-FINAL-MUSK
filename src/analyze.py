@@ -1,10 +1,10 @@
-from functional_utils import *
-import json, pandas as pd
-from client import Client
-from sale import Sale
-from client_collection import ClientCollection
-from sales_collection import SalesCollection
+from src.functional_utils import *
+from src.client import Client
+from src.sale import Sale
+from src.client_collection import ClientCollection
+from src.sales_collection import SalesCollection
 from datetime import datetime
+import json, pandas as pd
 
 def generate_report():
     #Lectura de datos
