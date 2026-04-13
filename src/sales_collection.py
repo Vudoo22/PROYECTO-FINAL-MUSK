@@ -28,7 +28,7 @@ class SalesCollection:
         return float(df.groupby("category")["amount"].sum().get(category, 0))
 
     def average_sale_by_client(self, client_id):
-        if self.sales_by_client(client_id) == 0:
+        if len(self.sales_by_client(client_id)) == 0:
             return 0
         else:
             averageSale = self.total_amount_by_client(client_id) / self.sales_by_client(client_id)
