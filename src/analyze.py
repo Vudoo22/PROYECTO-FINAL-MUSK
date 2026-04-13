@@ -110,11 +110,7 @@ def generate_report():
             }
         )
 
-    top_client_by_country = {
-        "Spain": topClientByCountry["Spain"],
-        "Germany": topClientByCountry["Germany"],
-        "France": topClientByCountry["France"]
-    }
+    top_client_by_country = topClientByCountry
 
     sales_by_category = {
         "Electronics": total_electronics,
