@@ -1,7 +1,7 @@
 import sys
 import os
 
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '.')))
 
 from src.functional_utils import *
 from src.client import Client
@@ -53,10 +53,10 @@ def generate_report():
     #5º
     average_sale = dict()
     for client in client_collection.clients:
-        average_sale[client.client_id] = round(sales_collection.average_sale_by_client(client.client_id), 2)
+        average_sale[client.client_id] = sales_collection.average_sale_by_client(client.client_id)
 
     #6º
-    #Conseguimo clientes por país
+    #Conseguimos clientes por país
     ClientsByCountry = dict()
     for i in client_collection.clients:
         if i.country not in ClientsByCountry:
@@ -68,7 +68,8 @@ def generate_report():
         for i in clients_list:
             AmountByClient[i.client_id] = sales_collection.total_amount_by_client(i.client_id)      #Hacemos diccionario para cada país con id de cliente y total de gasto
 
-        topClientByCountry[country] = client_collection.get_client_by_id(max(AmountByClient, key = AmountByClient.get)).name           #Con el diccionario previamente creado, comparamos sus valores y guardamos la llave del cliente con mayor gasto en un diccionario país: id
+        if AmountByClient:
+            topClientByCountry[country] = client_collection.get_client_by_id(max(AmountByClient, key = AmountByClient.get)).name           #Con el diccionario previamente creado, comparamos sus valores y guardamos la llave del cliente con mayor gasto en un diccionario país: id
 
     #7º
     total_electronics = sales_collection.total_amount_by_category(sales_df, "Electronics")

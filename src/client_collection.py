@@ -14,8 +14,8 @@ class ClientCollection:
                 return i
 
     def clients_by_country(self, country):
-        clientes = []
+        clients = []
         for i in self.clients:
             if i.country == country:
-                clientes.append(i)
-        return clientes
+                clients.append(i)
+        return clients

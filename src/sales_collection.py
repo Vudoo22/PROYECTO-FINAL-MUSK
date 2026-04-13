@@ -31,5 +31,5 @@ class SalesCollection:
         if len(self.sales_by_client(client_id)) == 0:
             return 0
         else:
-            averageSale = self.total_amount_by_client(client_id) / len(self.sales_by_client(client_id))
+            averageSale = round(self.total_amount_by_client(client_id) / len(self.sales_by_client(client_id)), 2)
         return averageSale
