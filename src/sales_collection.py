@@ -11,10 +11,10 @@ class SalesCollection:
         self.sales.append(sale)
 
     def sales_by_client(self, client_id):
-        sales = 0
+        sales = []
         for sale in self.sales:
             if sale.client_id == client_id:
-                sales += 1
+                sales.append(sale)
         return sales
 
     def total_amount_by_client(self, client_id):

@@ -43,7 +43,7 @@ def generate_report():
     #4º
     sale_count = dict()
     for client in client_collection.clients:
-        sale_count[client.client_id] = sales_collection.sales_by_client(client.client_id)
+        sale_count[client.client_id] = len(sales_collection.sales_by_client(client.client_id))
 
     #5º
     average_sale = dict()
