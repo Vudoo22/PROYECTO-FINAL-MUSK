@@ -133,4 +133,4 @@ def generate_report():
     return report_data
 
 with open("data/report.json", "w") as f:
-    json.dumps(generate_report(), f, indent=4)
+    json.dump(generate_report(), f, indent=4)
