@@ -1,8 +1,8 @@
-from src.functional_utils import *
-from src.client import Client
-from src.sale import Sale
-from src.client_collection import ClientCollection
-from src.sales_collection import SalesCollection
+from functional_utils import *
+from client import Client
+from sale import Sale
+from client_collection import ClientCollection
+from sales_collection import SalesCollection
 from datetime import datetime
 import json, pandas as pd
 
@@ -48,7 +48,7 @@ def generate_report():
     #5º
     average_sale = dict()
     for client in client_collection.clients:
-        average_sale[client.client_id] = sales_collection.average_sale_by_client(client.client_id)
+        average_sale[client.client_id] = round(sales_collection.average_sale_by_client(client.client_id), 2)
 
     #6º
     #Conseguimo clientes por país
@@ -89,10 +89,14 @@ def generate_report():
     #10º
     sales_df["date"] = pd.to_datetime(sales_df["date"])
     total_revenue = sales_df.groupby(sales_df["date"].dt.to_period("M"))["amount"].sum()
+    monthly_sales = {str(k): float(v) for k, v in total_revenue.to_dict().items()}
 
 
     #Creación informe
-    summary = {"total_clients": total_clients, "total_sales": total_sales, "total_revenue": sales_df['amount'].sum}
+    summary = {"total_clients": total_clients,
+    "total_sales": total_sales,
+    "total_revenue": float(sales_df['amount'].sum())
+    }
 
     clients = []
     for i in client_collection.clients:
@@ -118,8 +122,6 @@ def generate_report():
     }
 
     high_spending_clients = high_spenders
-
-    monthly_sales = total_revenue.to_dict()
 
     report_data = {
         "summary": summary,
