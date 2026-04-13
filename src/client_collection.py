@@ -1,6 +1,9 @@
 class ClientCollection:
-    def __init__(self):
-        self.clients = []
+    def __init__(self, clients=None):
+        if clients is not None:
+            self.clients = clients 
+        else:
+            self.clients = []
     
     def add(self, client):
         self.clients.append(client)

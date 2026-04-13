@@ -2,7 +2,10 @@ import pandas as pd
 
 class SalesCollection:
     def __init__(self):
-        self.sales = []
+        if sales is not None:
+            self.sales = sales 
+        else:
+            self.sales = []
     
     def add(self, sale):
         self.sales.append(sale)
