@@ -1,8 +1,3 @@
-import sys
-import os
-
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '.')))
-
 from src.functional_utils import *
 from src.client import Client
 from src.sale import Sale
